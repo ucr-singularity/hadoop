@@ -6,6 +6,8 @@ From: centos:7
 yum update -y
 # Install some useful packages
 yum install -y vim screen tmux wget
+# Install/enable the EPEL repository
+yum install -y epel-release
 
 # HADOOP 
 yum install -y java-1.8.0-openjdk python2-pip python-devel
