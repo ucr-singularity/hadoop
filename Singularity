@@ -14,7 +14,7 @@ yum install -y java-1.8.0-openjdk python2-pip python-devel
 pip install py4j
 cd /usr/local/src
 wget https://archive.apache.org/dist/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz
-shasum_actual=`spark-2.3.1-bin-hadoop2.7.tgz | awk '{ print $1 }'`
+shasum_actual=`sha512sum spark-2.3.1-bin-hadoop2.7.tgz | awk '{ print $1 }'`
 shasum_should_be=dc3a97f3d99791d363e4f70a622b84d6e313bd852f6fdbc777d31eab44cbc112ceeaa20f7bf835492fb654f48ae57e9969f93d3b0e6ec92076d1c5e1b40b4696
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 tar xzf spark-2.3.1-bin-hadoop2.7.tgz
