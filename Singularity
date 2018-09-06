@@ -8,7 +8,7 @@ yum update -y
 yum install -y vim screen tmux wget
 
 # HADOOP 
-yum install -y java-1.8.0-openjdk python-pip python-devel
+yum install -y java-1.8.0-openjdk python2-pip python-devel
 cd /usr/local/src
 wget http://mirrors.gigenet.com/apache/hadoop/common/hadoop-2.9.1/hadoop-2.9.1-src.tar.gz
 shasum_actual=`sha512sum hadoop-2.9.1-src.tar.gz | awk '{ print $1 }'`
