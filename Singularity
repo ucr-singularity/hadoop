@@ -12,7 +12,7 @@ yum install -y java-1.8.0-openjdk
 cd /usr/local/src
 wget http://mirrors.gigenet.com/apache/hadoop/common/hadoop-2.9.1/hadoop-2.9.1-src.tar.gz
 shasum_actual=`sha512sum hadoop-2.9.1-src.tar.gz | awk '{ print $1 }'`
-shashum_should_be=8b3140d6e28337f575e87663a5b76ef1027cb1d41ac06a82bf69cf47d231c71c3a2cab736809361db49687132252693659ae1f084d2382711074808a73a40c5b
+shasum_should_be=8b3140d6e28337f575e87663a5b76ef1027cb1d41ac06a82bf69cf47d231c71c3a2cab736809361db49687132252693659ae1f084d2382711074808a73a40c5b
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 pip install py4j
 
