@@ -5,11 +5,11 @@ From: centos:7
 # Update
 yum update -y
 # Install some useful packages
-yum install -y vim screen tmux wget
+yum install -y vim screen tmux wget elinks
 # Install/enable the EPEL repository
 yum install -y epel-release
 
-# SPARK AND HADOOP 
+# SPARK
 yum install -y java-1.8.0-openjdk python2-pip python-devel
 pip install py4j
 cd /usr/local/src
@@ -19,6 +19,16 @@ shasum_should_be=dc3a97f3d99791d363e4f70a622b84d6e313bd852f6fdbc777d31eab44cbc11
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 tar xzf spark-2.3.1-bin-hadoop2.7.tgz
 pip install pyspark
+
+# HADOOP
+yum install -y java-1.8.0-openjdk python2-pip python-devel
+pip install py4j
+cd /usr/local/src
+wget http://www-us.apache.org/dist/hadoop/common/hadoop-2.7.7/hadoop-2.7.7.tar.gz
+shasum_actual=`sha512sum hadoop-2.7.7.tar.gz | awk '{ print $1 }'`
+shasum_should_be=17c8917211dd4c25f78bf60130a390f9e273b0149737094e45f4ae5c917b1174b97eb90818c5df068e607835120126281bcc07514f38bd7fd3cb8e9d3db1bdde
+[[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
+tar xzf hadoop-2.7.7.tar.gz
 
 # Clean up
 yum clean all
