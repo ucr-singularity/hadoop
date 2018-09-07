@@ -10,7 +10,7 @@ yum install -y vim screen tmux wget elinks
 yum install -y epel-release
 
 # SPARK
-yum install -y java-1.8.0-openjdk python2-pip python-devel
+yum install -y java-1.8.0-openjdk python2-pip python-devel openssh-clients
 pip install py4j
 cd /usr/local/src
 wget https://archive.apache.org/dist/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz
