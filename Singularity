@@ -64,17 +64,4 @@ export HADOOP_DATANODE_PLACEHOLDER=hadoop_datanode_placeholder
 %apphelp hadoop-datanode
 This app runs a Hadoop data node
 
-## Hadoop - all services
-
-%apprun hadoop-all
-exec echo "HADOOP ALL SERVICES PLACEHOLDER"
-
-%appinstall hadoop-all
-touch /hadoop-all-services-app-available
-
-%appenv hadoop-all
-export HADOOP_ALL_SERVICE_PLACEHOLDER=hadoop_all_service_placeholder
-
-%apphelp hadoop-all
-This app runs all Hadoop services
 
