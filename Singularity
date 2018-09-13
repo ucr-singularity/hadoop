@@ -5,7 +5,7 @@ From: centos:7
 # Update
 yum update -y
 # Install some useful packages
-yum install -y vim screen tmux wget elinks
+yum install -y vim screen tmux wget elinks less
 # Install/enable the EPEL repository
 yum install -y epel-release
 
@@ -34,7 +34,7 @@ tar xzf hadoop-2.7.7.tar.gz
 yum clean all
 
 %environment
-export HADOOP_PLACEHOLDER=hadoop_placeholder
+export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
 
 ## Hadoop namenode
 
