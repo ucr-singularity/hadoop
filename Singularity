@@ -35,17 +35,91 @@ yum clean all
 
 %environment
 export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d
+export YARN_LOG_DIR=~/hadoop/logs/yarn.d
+export HADOOP_CONF_DIR=~/hadoop/conf.d
+export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin
+
+## Hadoop Single-machine cluster app
+
+%apprun hadoop-single
+if [ "$1" == "format" ]; then
+    echo "Formatting the namenode with a default name..."
+    $HADOOP_HOME/bin/hdfs namenode -format hadoop_cluster
+
+elif [ "$1" == "start" ]; then
+    echo "Starting the namenode..."
+    $HADOOP_HOME/sbin/hadoop-daemon.sh start namenode
+
+    echo "Starting the datanode..."
+    $HADOOP_HOME/sbin/hadoop-daemon.sh start datanode
+
+    echo "Starting the resourcemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
+
+    echo "Startring the nodemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+
+elif [ "$1" == "stop" ]; then
+    echo "Stopping the namenode..."
+    $HADOOP_HOME/sbin/hadoop-daemon.sh stop namenode
+
+    echo "Stopping the datanode..."
+    $HADOOP_HOME/sbin/hadoop-daemon.sh stop datanode
+
+    echo "Stopping the resourcemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh stop resourcemanager
+
+    echo "Stopping the nodemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh stop nodemanager
+
+else
+  echo "Incorrect argument for application."
+  echo "Correct usage is: singularity run --app hadoop-single <singularity image> [ ARGUMENT ]"
+  echo "Arguments: format, start, stop"
+fi
+
+%apphelp hadoop-single
+This app runs a single-machine hadoop cluster.
+Run the app using "singularity run --app hadoop-single <singularity image> [ ARGUMENT ]"
+ARGUMENTS:
+- format  :  Formats the cluster with a default name of "hadoop_cluster"
+- start   :  Starts the namenode, datanode, resource manager and node manager daemons.
+- stop    :  Stops the namenode, datanode, resource manager and node manager daemons.
 
 ## Hadoop namenode
 
 %apprun hadoop-namenode
-exec echo "HADOOP NAMENODE PLACEHOLDER"
+if [ "$1" == "format" ]; then
+    echo "Formatting the namenode with a default name..."
+    $HADOOP_HOME/bin/hdfs namenode -format hadoop_cluster
 
-%appinstall hadoop-namenode
-touch /hadoop-namenode-app-available
+elif [ "$1" == "start" ]; then
+    echo "Starting the namenode..."
+    $HADOOP_HOME/sbin/hadoop-daemon.sh start namenode
 
-%appenv hadoop-namenode
-export HADOOP_NAMENODE_PLACEHOLDER=hadoop_namenode_placeholder
+    echo "Starting the resourcemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
+
+    echo "Startring the nodemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+
+elif [ "$1" == "stop" ]; then
+    echo "Stopping the namenode..."
+    $HADOOP_HOME/sbin/hadoop-daemon.sh stop namenode
+
+    echo "Stopping the resourcemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh stop resourcemanager
+
+    echo "Stopping the nodemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh stop nodemanager
+
+else
+  echo "Incorrect argument for application."
+  echo "Correct usage is: singularity run --app hadoop-namenode <singularity image> [ ARGUMENT ]"
+  echo "Arguments: format, start, stop"
+fi
 
 %apphelp hadoop-namenode
 This app runs a Hadoop namenode
@@ -53,15 +127,25 @@ This app runs a Hadoop namenode
 ## Hadoop data node
 
 %apprun hadoop-data-node
-exec echo "HADOOP DATANODE PLACEHOLDER"
+if [ "$1" == "start" ]; then
+    echo "Starting the datanode..."
+    $HADOOP_HOME/sbin/hadoop-daemon.sh start datanode
 
-%appinstall hadoop-datanode
-touch /hadoop-datanode-app-available
+    echo "Startring the nodemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
 
-%appenv hadoop-datanode
-export HADOOP_DATANODE_PLACEHOLDER=hadoop_datanode_placeholder
+elif [ "$1" == "stop" ]; then
+    echo "Stopping the datanode..."
+    $HADOOP_HOME/sbin/hadoop-daemon.sh stop datanode
 
-%apphelp hadoop-datanode
+    echo "Stopping the nodemanager..."
+    $HADOOP_HOME/sbin/yarn-daemon.sh stop nodemanager
+
+else
+  echo "Incorrect argument for application."
+  echo "Correct usage is: singularity run --app hadoop-namenode <singularity image> [ ARGUMENT ]"
+  echo "Arguments: start, stop"
+fi
+
+%apphelp hadoop-data-node
 This app runs a Hadoop data node
-
-
