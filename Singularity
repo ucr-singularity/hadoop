@@ -5,7 +5,7 @@ From: centos:7
 # Update
 yum update -y
 # Install some useful packages
-yum install -y vim screen tmux wget elinks less net-tools
+yum install -y vim screen tmux wget elinks less net-tools bind-utils nmap-ncat
 # Install/enable the EPEL repository
 yum install -y epel-release
 
