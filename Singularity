@@ -45,20 +45,20 @@ export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin
 %apprun hadoop-single
 if [ "$1" == "format" ]; then
     echo "Formatting the namenode with a default name..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/bin/hdfs namenode -format hadoop_cluster
+    HADOOP_HOME/bin/hdfs namenode -format hadoop_cluster
 
 elif [ "$1" == "start" ]; then
     echo "Starting the namenode..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/sbin/hadoop-daemon.sh start namenode
+    $HADOOP_HOME/sbin/hadoop-daemon.sh start namenode
 
     echo "Starting the datanode..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/sbin/hadoop-daemon.sh start datanode
+    $HADOOP_HOME/sbin/hadoop-daemon.sh start datanode
 
     echo "Starting the resourcemanager..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
+    $HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
 
     echo "Startring the nodemanager..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+    $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the namenode..."
@@ -92,17 +92,17 @@ ARGUMENTS:
 %apprun hadoop-namenode
 if [ "$1" == "format" ]; then
     echo "Formatting the namenode with a default name..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/bin/hdfs namenode -format hadoop_cluster
+    $HADOOP_HOME/bin/hdfs namenode -format hadoop_cluster
 
 elif [ "$1" == "start" ]; then
     echo "Starting the namenode..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/sbin/hadoop-daemon.sh start namenode
+    $HADOOP_HOME/sbin/hadoop-daemon.sh start namenode
 
     echo "Starting the resourcemanager..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
+    $HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
 
     echo "Startring the nodemanager..."
-    HADOOP_CONF_DIR=~/hadoop/namenode-conf.d $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+    $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the namenode..."
@@ -126,23 +126,12 @@ This app runs a Hadoop namenode
 ## Hadoop data node
 
 %apprun hadoop-data-node
-TEMPDIR=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
-CONF_DIR=""
-
-if [[ $TEMPDIR == *"_2"* ]]; then
-    CONF_DIR=~/hadoop/datanode-1-conf.d
-elif [[ $TEMPDIR == *"_3"* ]]; then
-    CONF_DIR=~/hadoop/datanode-2-conf.d
-else
-    CONF_DIR=~/hadoop/datanode-3-conf.d
-fi
-
 if [ "$1" == "start" ]; then
     echo "Starting the datanode..."
-    HADOOP_CONF_DIR=$CONF_DIR $HADOOP_HOME/sbin/hadoop-daemon.sh start datanode
+    $HADOOP_HOME/sbin/hadoop-daemon.sh start datanode
 
     echo "Startring the nodemanager..."
-    HADOOP_CONF_DIR=$CONF_DIR $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+    $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
