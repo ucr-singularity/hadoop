@@ -39,6 +39,7 @@ export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d
 export YARN_LOG_DIR=~/hadoop/logs/yarn.d
 export HADOOP_PID_DIR=~/hadoop/pids
+export YARN_PID_DIR=~/hadoop/pids
 export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin
 
 ## Hadoop Single-machine cluster app
