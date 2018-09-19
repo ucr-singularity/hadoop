@@ -37,13 +37,6 @@ yum clean all
 export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin
-
-export HADOOP_INSTALL=$HADOOP_HOME
-export HADOOP_MAPRED_HOME=$HADOOP_HOME
-export HADOOP_COMMON_HOME=$HADOOP_HOME
-export HADOOP_HDFS_HOME=$HADOOP_HOME
-export HADOOP_YARN_HOME=$HADOOP_HOME
-
 export HADOOP_CLASSPATH=$(hadoop classpath)
 
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
@@ -53,24 +46,28 @@ if [[ "$TEMP" == *"_1"* ]]; then
     export HADOOP_PID_DIR=~/hadoop/pids/namenode
     export YARN_PID_DIR=~/hadoop/pids/namenode
     export HADOOP_CONF_DIR=~/hadoop/namenode-conf.d
+    export YARN_CONF_DIR=~/hadoop/namenode-conf.d
 elif [[ "$TEMP" == *"_2"* ]]; then
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
     export YARN_PID_DIR=~/hadoop/pids/datanode-1
     export HADOOP_CONF_DIR=~/hadoop/datanode-1-conf.d
+    export YARN_CONF_DIR=~/hadoop/datanode-1-conf.d
 elif [[ "$TEMP" == *"_3"* ]]; then
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
     export YARN_PID_DIR=~/hadoop/pids/datanode-2
     export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
+    export YARN_CONF_DIR=~/hadoop/datanode-2-conf.d
 else
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
     export YARN_PID_DIR=~/hadoop/pids/datanode-3
     export HADOOP_CONF_DIR=~/hadoop/datanode-3-conf.d
+    export YARN_CONF_DIR=~/hadoop/datanode-3-conf.d
 fi
 
 ## Hadoop Single-machine cluster app
