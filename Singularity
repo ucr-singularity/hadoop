@@ -98,7 +98,7 @@ export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
 export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
 export HADOOP_PID_DIR=~/hadoop/pids/namenode
 export YARN_PID_DIR=~/hadoop/pids/namenode
-export HADOOP_CONF_DIR=~/hadoop/conf.d/namenode-conf.d
+export HADOOP_CONF_DIR=~/hadoop/namenode-conf.d
 
 %apprun hadoop-namenode
 if [ "$1" == "format" ]; then
@@ -134,7 +134,7 @@ export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1
 export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
 export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
 export YARN_PID_DIR=~/hadoop/pids/datanode-1
-export HADOOP_CONF_DIR=~/hadoop/conf.d/datanode-1-conf.d
+export HADOOP_CONF_DIR=~/hadoop/datanode-1-conf.d
 
 %apprun hadoop-data-node-1
 if [ "$1" == "start" ]; then
@@ -166,7 +166,7 @@ export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
 export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
 export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
 export YARN_PID_DIR=~/hadoop/pids/datanode-2
-export HADOOP_CONF_DIR=~/hadoop/conf.d/datanode-2-conf.d
+export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
 
 %apprun hadoop-data-node-2
 if [ "$1" == "start" ]; then
@@ -198,7 +198,7 @@ export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
 export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
 export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
 export YARN_PID_DIR=~/hadoop/pids/datanode-3
-export HADOOP_CONF_DIR=~/hadoop/conf.d/datanode-3-conf.d
+export HADOOP_CONF_DIR=~/hadoop/datanode-3-conf.d
 
 %apprun hadoop-data-node-3
 if [ "$1" == "start" ]; then
