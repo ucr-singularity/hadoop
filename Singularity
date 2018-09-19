@@ -38,6 +38,14 @@ export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin
 
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export HADOOP_YARN_HOME=$HADOOP_HOME
+
+export HADOOP_CLASSPATH=$(hadoop classpath)
+
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
 if [[ "$TEMP" == *"_1"* ]]; then
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
