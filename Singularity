@@ -5,7 +5,7 @@ From: centos:7
 # Update
 yum update -y
 # Install some useful packages
-yum install -y vim screen tmux wget elinks less net-tools bind-utils nmap-ncat
+yum install -y vim screen tmux wget elinks less net-tools bind-utils nmap-ncat 
 # Install/enable the EPEL repository
 yum install -y epel-release
 
@@ -21,7 +21,7 @@ tar xzf spark-2.3.1-bin-hadoop2.7.tgz
 pip install pyspark
 
 # HADOOP
-yum install -y java-1.8.0-openjdk python2-pip python-devel
+yum install -y java-1.8.0-openjdk python2-pip python-devel java-1.8.0-openjdk-devel
 pip install py4j
 cd /usr/local/src
 wget http://www-us.apache.org/dist/hadoop/common/hadoop-2.7.7/hadoop-2.7.7.tar.gz
