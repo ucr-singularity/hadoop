@@ -29,6 +29,14 @@ shasum_should_be=17c8917211dd4c25f78bf60130a390f9e273b0149737094e45f4ae5c917b117
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 tar xzf hadoop-2.7.7.tar.gz
 
+# CASSANDRA
+cd /usr/local/src
+wget https://archive.apache.org/dist/cassandra/3.11.3/apache-cassandra-3.11.3-bin.tar.gz
+shasum_actual=`sha1sum apache-cassandra-3.11.3-bin.tar.gz | ask '{ print $1 }'`
+shasum_should_be=dbc6ddbd074d74da97eff66db9699b5ce28ec6f0
+[[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
+tar xzf apache-cassandra-3.11.3-bin.tar.gz
+
 # Clean up
 yum clean all
 
