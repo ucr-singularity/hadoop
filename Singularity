@@ -36,6 +36,7 @@ shasum_actual=`sha1sum apache-cassandra-3.11.3-bin.tar.gz | awk '{ print $1 }'`
 shasum_should_be=dbc6ddbd074d74da97eff66db9699b5ce28ec6f0
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 tar xzf apache-cassandra-3.11.3-bin.tar.gz
+sed -i 's/$CASSANDRA_HOME\/logs/\/opt\/hadoop\/home\/$USER\/cassandra\/logs/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra.sh
 
 # Clean up
 yum clean all
