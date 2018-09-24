@@ -77,7 +77,7 @@ elif [[ "$TEMP" == *"_3"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-2-conf.d
 else
-        export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_3
+    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_3
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
