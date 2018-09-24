@@ -45,7 +45,6 @@ yum clean all
 export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 export CASSANDRA_HOME=/usr/local/src/apache-cassandra-3.11.3
-export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf
 export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:/usr/local/src/spark-2.3.1-bin-hadoop2.7/bin:/usr/local/src/apache-cassandra-3.11.3/bin
 export HADOOP_CLASSPATH=$(hadoop classpath)
 export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$CASSANDRA_HOME/lib
@@ -54,6 +53,7 @@ export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
 
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
 if [[ "$TEMP" == *"_1"* ]]; then
+    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_main
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
     export HADOOP_PID_DIR=~/hadoop/pids/namenode
@@ -61,6 +61,7 @@ if [[ "$TEMP" == *"_1"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/namenode-conf.d
     export YARN_CONF_DIR=~/hadoop/namenode-conf.d
 elif [[ "$TEMP" == *"_2"* ]]; then
+    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_1
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
@@ -68,6 +69,7 @@ elif [[ "$TEMP" == *"_2"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/datanode-1-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-1-conf.d
 elif [[ "$TEMP" == *"_3"* ]]; then
+    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_2
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
@@ -75,6 +77,7 @@ elif [[ "$TEMP" == *"_3"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-2-conf.d
 else
+        export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_3
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
