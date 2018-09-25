@@ -38,6 +38,13 @@ shasum_should_be=dbc6ddbd074d74da97eff66db9699b5ce28ec6f0
 tar xzf apache-cassandra-3.11.3-bin.tar.gz
 sed -i 's/$CASSANDRA_HOME\/logs/\/opt\/hadoop\/home\/$USER\/cassandra\/logs/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra
 
+cat > /usr/local/bin/cqlsh << ENDOFFILE
+#!/bin/bash
+ip=`ifconfig | head -2 | grep inet | awk '{print $2 }'`
+/usr/local/src/apache-cassandra-3.11.3/bin/cqlsh "$@" $ip
+ENDOFFILE
+chmod 0755 /usr/local/bin/cqlsh
+
 # Clean up
 yum clean all
 
