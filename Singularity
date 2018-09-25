@@ -59,7 +59,7 @@ yum clean all
 export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 export CASSANDRA_HOME=/usr/local/src/apache-cassandra-3.11.3
-export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:/usr/local/src/spark-2.3.1-bin-hadoop2.7/bin:/usr/local/src/apache-cassandra-3.11.3/bin:/usr/local/src/gradle-4.10.2/bin
+export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:/usr/local/src/spark-2.3.1-bin-hadoop2.7/bin:/usr/local/src/apache-cassandra-3.11.3/bin:/usr/local/src/gradle-4.10.2/gradle-4.10.2/bin
 export HADOOP_CLASSPATH=$(hadoop classpath)
 export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$CASSANDRA_HOME/lib
 export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:/lib64:/usr/lib64
