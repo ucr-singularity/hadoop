@@ -47,10 +47,10 @@ chmod 0755 /usr/local/bin/cqlsh
 
 # GRADLE
 cd /usr/local/src
-wget https://services.gradle.org/distributions/gradle-4.10.2-all.zip
-shasum_actual=`sha256sum gradle-4.10.2-all.zip | awk '{ print $1 }'`
-shasum_should_be=b7aedd369a26b177147bcb715f8b1fc4fe32b0a6ade0d7fd8ee5ed0c6f731f2c
-unzip -d /usr/local/src/gradle-4.10.2 gradle-4.10.2-all.zip
+wget https://services.gradle.org/distributions/gradle-3.3-all.zip
+shasum_actual=`sha256sum gradle-3.3-all.zip | awk '{ print $1 }'`
+shasum_should_be=71a787faed83c4ef21e8464cc8452b941b5fcd575043aa29d39d15d879be89f7
+unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
 
 # Clean up
 yum clean all
