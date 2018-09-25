@@ -36,7 +36,7 @@ shasum_actual=`sha1sum apache-cassandra-3.11.3-bin.tar.gz | awk '{ print $1 }'`
 shasum_should_be=dbc6ddbd074d74da97eff66db9699b5ce28ec6f0
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 tar xzf apache-cassandra-3.11.3-bin.tar.gz
-sed -i 's/$CASSANDRA_HOME\/logs/\/opt\/hadoop\/home\/$USER\/cassandra\/logs/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra
+sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra
 
 cat > /usr/local/bin/cqlsh << \ENDOFFILE
 #!/bin/bash
@@ -61,6 +61,7 @@ export SPARK_MASTER_OPTS=“-Dspark.master=yarn”
 
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
 if [[ "$TEMP" == *"_1"* ]]; then
+    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_main
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_main
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
@@ -69,6 +70,7 @@ if [[ "$TEMP" == *"_1"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/namenode-conf.d
     export YARN_CONF_DIR=~/hadoop/namenode-conf.d
 elif [[ "$TEMP" == *"_2"* ]]; then
+    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_1
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_1
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
@@ -77,6 +79,7 @@ elif [[ "$TEMP" == *"_2"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/datanode-1-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-1-conf.d
 elif [[ "$TEMP" == *"_3"* ]]; then
+    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_2
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_2
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
@@ -85,6 +88,7 @@ elif [[ "$TEMP" == *"_3"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-2-conf.d
 else
+    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_3
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_3
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
