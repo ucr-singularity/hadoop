@@ -5,7 +5,7 @@ From: centos:7
 # Update
 yum update -y
 # Install some useful packages
-yum install -y vim screen tmux wget elinks less net-tools bind-utils nmap-ncat git 
+yum install -y vim screen tmux wget elinks less net-tools bind-utils nmap-ncat git unzip
 # Install/enable the EPEL repository
 yum install -y epel-release
 
@@ -45,6 +45,11 @@ ip=`ifconfig | head -2 | grep inet | awk '{print $2 }'`
 ENDOFFILE
 chmod 0755 /usr/local/bin/cqlsh
 
+# GRADLE
+cd /usr/local/src
+wget https://services.gradle.org/distributions/gradle-4.10.2-all.zip
+unzip -d /usr/local/src/gradle-4.10.2 gradle-4.10.2-all.zip
+
 # Clean up
 yum clean all
 
@@ -52,7 +57,7 @@ yum clean all
 export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 export CASSANDRA_HOME=/usr/local/src/apache-cassandra-3.11.3
-export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:/usr/local/src/spark-2.3.1-bin-hadoop2.7/bin:/usr/local/src/apache-cassandra-3.11.3/bin
+export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:/usr/local/src/spark-2.3.1-bin-hadoop2.7/bin:/usr/local/src/apache-cassandra-3.11.3/bin:/usr/local/src/gradle-4.10.2/bin
 export HADOOP_CLASSPATH=$(hadoop classpath)
 export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$CASSANDRA_HOME/lib
 export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:/lib64:/usr/lib64
