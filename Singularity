@@ -119,6 +119,7 @@ elif [ "$1" == "start" ]; then
 
     echo "Starting the resourcemanager..."
     $HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
+    
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the namenode..."
@@ -151,6 +152,9 @@ if [ "$1" == "start" ]; then
 
     echo "Startring the nodemanager..."
     $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+    
+    echo "Starting cassandra..."
+    cassandra 2>&1 > /dev/null
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
@@ -183,6 +187,9 @@ if [ "$1" == "start" ]; then
 
     echo "Startring the nodemanager..."
     $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+    
+    echo "Starting cassandra..."
+    cassandra 2>&1 > /dev/null
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
@@ -215,6 +222,9 @@ if [ "$1" == "start" ]; then
 
     echo "Startring the nodemanager..."
     $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+    
+    echo "Starting cassandra..."
+    cassandra 2>&1 > /dev/null
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
