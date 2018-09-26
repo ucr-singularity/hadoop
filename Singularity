@@ -64,7 +64,6 @@ export HADOOP_CLASSPATH=$(hadoop classpath)
 export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$CASSANDRA_HOME/lib
 export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:/lib64:/usr/lib64
 export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
-export SPARK_MASTER_OPTS=“-Dspark.master=yarn”
 
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
 if [[ "$TEMP" == *"_1"* ]]; then
@@ -76,6 +75,8 @@ if [[ "$TEMP" == *"_1"* ]]; then
     export YARN_PID_DIR=~/hadoop/pids/namenode
     export HADOOP_CONF_DIR=~/hadoop/namenode-conf.d
     export YARN_CONF_DIR=~/hadoop/namenode-conf.d
+    export SPARK_LOG_DIR=~/hadoop/logs/spark.d/namenode
+    export SPARK_PID_DIR=~/hadoop/pids/namenode
 elif [[ "$TEMP" == *"_2"* ]]; then
     export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_1
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_1
@@ -85,6 +86,8 @@ elif [[ "$TEMP" == *"_2"* ]]; then
     export YARN_PID_DIR=~/hadoop/pids/datanode-1
     export HADOOP_CONF_DIR=~/hadoop/datanode-1-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-1-conf.d
+    export SPARK_LOG_DIR=~/hadoop/logs/spark.d/datanode-1
+    export SPARK_PID_DIR=~/hadoop/pids/datanode-1
 elif [[ "$TEMP" == *"_3"* ]]; then
     export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_2
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_2
@@ -94,6 +97,8 @@ elif [[ "$TEMP" == *"_3"* ]]; then
     export YARN_PID_DIR=~/hadoop/pids/datanode-2
     export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-2-conf.d
+    export SPARK_LOG_DIR=~/hadoop/logs/spark.d/datanode-2
+    export SPARK_PID_DIR=~/hadoop/pids/datanode-2
 else
     export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_3
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_3
@@ -103,6 +108,8 @@ else
     export YARN_PID_DIR=~/hadoop/pids/datanode-3
     export HADOOP_CONF_DIR=~/hadoop/datanode-3-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-3-conf.d
+    export SPARK_LOG_DIR=~/hadoop/logs/spark.d/datanode-3
+    export SPARK_PID_DIR=~/hadoop/pids/datanode-3
 fi
 
 
