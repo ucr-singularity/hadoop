@@ -81,7 +81,7 @@ export LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:/lib64:/usr/lib64
 # Generate SPARK_MASTER from IP information
 cluster_last_octet_base=$(( ( $(ifconfig | grep 'inet 10.0.' | awk '{ print $2 }' | awk -F\. '{ print $4 }') / 4 ) * 4 ))
 node=$(( $(ifconfig | grep 'inet 10.0.' | awk '{ print $2 }' | awk -F\. '{ print $4 }') %4 - 1 ))
-spark_master_last_octet=$(( ${cluster_last_octet_base} + 1 ))
+spark_master_last_octet=$(( ${cluster_last_octet_base} + 2 ))
 export SPARK_MASTER=10.0.1.${spark_master_last_octet}
 
 # Node specific environment variables, for use by all programs on those nodes
@@ -157,13 +157,6 @@ fi
 
 ## Hadoop namenode
 
-#%appenv hadoop-namenode
-#export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
-#export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
-#export HADOOP_PID_DIR=~/hadoop/pids/namenode
-#export YARN_PID_DIR=~/hadoop/pids/namenode
-#export HADOOP_CONF_DIR=~/hadoop/namenode-conf.d
-
 %apprun hadoop-namenode
 if [ "$1" == "format" ]; then
     echo "Formatting the namenode with a default name..."
@@ -197,14 +190,6 @@ fi
 
 %apphelp hadoop-namenode
 This app runs a Hadoop namenode
-
-## Hadoop data node 1
-#%appenv hadoop-data-node-1
-#export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1
-#export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
-#export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
-#export YARN_PID_DIR=~/hadoop/pids/datanode-1
-#export HADOOP_CONF_DIR=~/hadoop/datanode-1-conf.d
 
 %apprun hadoop-data-node-1
 if [ "$1" == "start" ]; then
@@ -241,14 +226,6 @@ fi
 %apphelp hadoop-data-node-1
 This app runs a Hadoop data node
 
-## Hadoop data node 2
-#%appenv hadoop-data-node-2
-#export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
-#export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
-#export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
-#export YARN_PID_DIR=~/hadoop/pids/datanode-2
-#export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
-
 %apprun hadoop-data-node-2
 if [ "$1" == "start" ]; then
     echo "Starting the datanode..."
@@ -283,14 +260,6 @@ fi
 
 %apphelp hadoop-data-node-2
 This app runs a Hadoop data node
-
-## Hadoop data node 3
-#%appenv hadoop-data-node-3
-#export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
-#export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
-#export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
-#export YARN_PID_DIR=~/hadoop/pids/datanode-3
-#export HADOOP_CONF_DIR=~/hadoop/datanode-3-conf.d
 
 %apprun hadoop-data-node-3
 if [ "$1" == "start" ]; then
