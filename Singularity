@@ -54,7 +54,7 @@ shasum_should_be=71a787faed83c4ef21e8464cc8452b941b5fcd575043aa29d39d15d879be89f
 unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
 
 # Clean up
-yum clean all
+# yum clean all
 
 %environment
 
