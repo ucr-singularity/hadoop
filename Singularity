@@ -65,6 +65,7 @@ export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$CASSANDRA_HOME/lib
 export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:/lib64:/usr/lib64
 export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
 export SPARK_CONF_DIR=~/spark/conf
+export SPARK_HOME=/usr/local/src/spark-2.3.1-bin-hadoop2.7
 
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
 if [[ "$TEMP" == *"_1"* ]]; then
