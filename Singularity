@@ -55,12 +55,12 @@ chmod 0755 /usr/local/bin/cqlsh
 #[[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 #unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
 
-# Clean up
-yum clean all
-
 # SBT
 curl https://bintray.com/sbt/rpm/rpm | sudo tee /etc/yum.repos.d/bintray-sbt-rpm.repo
-sudo yum install sbt
+yum install -y sbt
+
+# Clean up
+yum clean all
 
 %environment
 
