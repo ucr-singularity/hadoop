@@ -299,5 +299,6 @@ else
   echo "Arguments: start, stop"
 fi
 
+
 %apphelp hadoop-data-node-3
 This app runs a Hadoop data node
