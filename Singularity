@@ -56,7 +56,7 @@ chmod 0755 /usr/local/bin/cqlsh
 #unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
 
 # SBT
-curl https://bintray.com/sbt/rpm/rpm | sudo tee /etc/yum.repos.d/bintray-sbt-rpm.repo
+curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo
 yum install -y sbt
 
 # Clean up
