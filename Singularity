@@ -74,9 +74,15 @@ export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:/usr/local/src/gradle-3.3/gradle-3.3/bin
 export LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:/lib64:/usr/lib64
 
-# Will be changed moving to Spark server mode
-export SPARK_CONF_DIR=~/spark/conf
-export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
+# Changed moving to Spark server mode
+#export SPARK_CONF_DIR=~/spark/conf
+#export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
+
+# Generate SPARK_MASTER from IP information
+cluster_last_octet_base=$(( ( $(ifconfig | grep 'inet 10.0.' | awk '{ print $2 }' | awk -F\. '{ print $4 }') / 4 ) * 4 ))
+node=$(( $(ifconfig | grep 'inet 10.0.' | awk '{ print $2 }' | awk -F\. '{ print $4 }') %4 - 1 ))
+spark_master_last_octet=$(( ${cluster_last_octet_base} + 1 ))
+export SPARK_MASTER=10.0.1.${spark_master_last_octet}
 
 # Node specific environment variables, for use by all programs on those nodes
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
@@ -85,6 +91,7 @@ if [[ "$TEMP" == *"_1"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/namenode-conf.d
     export YARN_CONF_DIR=~/hadoop/namenode-conf.d
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_main
+    export SPARK_CONF_DIR=/opt/hadoop/home/$USER/spark/conf/spark_main
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
@@ -95,11 +102,14 @@ if [[ "$TEMP" == *"_1"* ]]; then
     export YARN_PID_DIR=~/hadoop/pids/namenode
     export SPARK_PID_DIR=~/hadoop/pids/namenode
     
+    export SPARK_MASTER_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
+    
 elif [[ "$TEMP" == *"_2"* ]]; then
 
     export HADOOP_CONF_DIR=~/hadoop/datanode-1-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-1-conf.d
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_1
+    export SPARK_CONF_DIR=/opt/hadoop/home/$USER/spark/conf/spark_node_1
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1    
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
@@ -115,7 +125,8 @@ elif [[ "$TEMP" == *"_3"* ]]; then
     export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-2-conf.d
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_2
-
+    export SPARK_CONF_DIR=/opt/hadoop/home/$USER/spark/conf/spark_node_2
+    
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
     export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_2
@@ -130,7 +141,8 @@ else
     export HADOOP_CONF_DIR=~/hadoop/datanode-3-conf.d
     export YARN_CONF_DIR=~/hadoop/datanode-3-conf.d
     export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_3
-
+    export SPARK_CONF_DIR=/opt/hadoop/home/$USER/spark/conf/spark_node_3
+    
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
     export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_3
@@ -164,6 +176,8 @@ elif [ "$1" == "start" ]; then
     echo "Starting the resourcemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh start resourcemanager
     
+    echo "Starting the spark master..."
+    ${SPARK_HOME}/sbin/spark-daemon.sh start master
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the namenode..."
@@ -172,6 +186,9 @@ elif [ "$1" == "stop" ]; then
     echo "Stopping the resourcemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh stop resourcemanager
 
+    echo "Stopping the spark master..."
+    ${SPARK_HOME}/sbin/spark-daemon.sh stop master
+    
 else
   echo "Incorrect argument for application."
   echo "Correct usage is: singularity run --app hadoop-namenode <singularity image> [ ARGUMENT ]"
@@ -199,6 +216,9 @@ if [ "$1" == "start" ]; then
     
     echo "Starting cassandra..."
     cassandra 2>&1 > /dev/null
+    
+    echo "Starting Spark slave..."
+    ${SPARK_HOME}/sbin/spark-daemon.sh start slave
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
@@ -208,6 +228,9 @@ elif [ "$1" == "stop" ]; then
     ${HADOOP_HOME}/sbin/yarn-daemon.sh stop nodemanager
 
     # TODO: Stop Cassandra
+    
+    echo "Stopping Spark slave..."
+    ${SPARK_HOME}/sbin/spark-daemon.sh stop slave
     
 else
   echo "Incorrect argument for application."
@@ -237,6 +260,9 @@ if [ "$1" == "start" ]; then
     echo "Starting cassandra..."
     cassandra 2>&1 > /dev/null
 
+    echo "Starting Spark slave..."
+    ${SPARK_HOME}/sbin/spark-daemon.sh start slave
+    
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh stop datanode
@@ -245,6 +271,9 @@ elif [ "$1" == "stop" ]; then
     ${HADOOP_HOME}/sbin/yarn-daemon.sh stop nodemanager
 
     # TODO: Stop Cassandra
+    
+    echo "Stopping Spark slave..."
+    ${SPARK_HOME}/sbin/spark-daemon.sh stop slave 
     
 else
   echo "Incorrect argument for application."
@@ -274,6 +303,9 @@ if [ "$1" == "start" ]; then
     echo "Starting cassandra..."
     cassandra 2>&1 > /dev/null
 
+    echo "Starting Spark slave..."
+    ${SPARK_HOME}/sbin/spark-daemon.sh start slave
+    
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh stop datanode
@@ -282,6 +314,9 @@ elif [ "$1" == "stop" ]; then
     ${HADOOP_HOME}/sbin/yarn-daemon.sh stop nodemanager
 
     # TODO: Stop Cassandra
+    
+    echo "Stopping Spark slave..."
+    ${SPARK_HOME}/sbin/spark-daemon.sh stop slave
     
 else
   echo "Incorrect argument for application."
