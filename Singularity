@@ -39,6 +39,7 @@ tar xzf apache-cassandra-3.11.3-bin.tar.gz
 sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra
 
 # A wrapper for cqlsh so that it always contacts the right IP in a container
+
 cat > /usr/local/bin/cqlsh << \ENDOFFILE
 #!/bin/bash
 ip=`ifconfig | head -2 | grep inet | awk '{print $2 }'`
@@ -47,14 +48,19 @@ ENDOFFILE
 chmod 0755 /usr/local/bin/cqlsh
 
 # GRADLE
-cd /usr/local/src
-wget https://services.gradle.org/distributions/gradle-3.3-all.zip
-shasum_actual=`sha256sum gradle-3.3-all.zip | awk '{ print $1 }'`
-shasum_should_be=71a787faed83c4ef21e8464cc8452b941b5fcd575043aa29d39d15d879be89f7
-unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
+#cd /usr/local/src
+#wget https://services.gradle.org/distributions/gradle-3.3-all.zip
+#shasum_actual=`sha256sum gradle-3.3-all.zip | awk '{ print $1 }'`
+#shasum_should_be=71a787faed83c4ef21e8464cc8452b941b5fcd575043aa29d39d15d879be89f7
+#[[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
+#unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
 
 # Clean up
-# yum clean all
+yum clean all
+
+# SBT
+curl https://bintray.com/sbt/rpm/rpm | sudo tee /etc/yum.repos.d/bintray-sbt-rpm.repo
+sudo yum install sbt
 
 %environment
 
