@@ -43,10 +43,10 @@ sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cas
 
 # GRADLE
 cd /usr/local/src
-wget https://services.gradle.org/distributions/gradle-3.3-all.zip
+wget https://services.gradle.org/distributions/gradle-4.10.2-all.zip
 shasum_actual=`sha256sum gradle-3.3-all.zip | awk '{ print $1 }'`
-shasum_should_be=71a787faed83c4ef21e8464cc8452b941b5fcd575043aa29d39d15d879be89f7
-unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
+shasum_should_be=b7aedd369a26b177147bcb715f8b1fc4fe32b0a6ade0d7fd8ee5ed0c6f731f2c
+unzip -d /usr/local/src/gradle-4.10.2 gradle-4.10.2-all.zip
 
 # A wrapper for cqlsh so that it always contacts the right IP in a container
 
@@ -89,67 +89,63 @@ export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
 if [[ "$TEMP" == *"_1"* ]]; then
 
-    export HADOOP_CONF_DIR=~/hadoop/namenode-conf.d
-    export YARN_CONF_DIR=~/hadoop/namenode-conf.d
-    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_main
-    #export SPARK_CONF_DIR=/opt/hadoop/home/$USER/spark/conf/spark_main
+    export HADOOP_CONF_DIR=~/hadoop/conf/namenode
+    export YARN_CONF_DIR=~/hadoop/conf/namenode
+    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra-main
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
-    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_main
-    export SPARK_LOG_DIR=~/hadoop/logs/spark.d/namenode
+    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-main
+    export SPARK_LOG_DIR=~/spark/logs/namenode
 
     export HADOOP_PID_DIR=~/hadoop/pids/namenode
     export YARN_PID_DIR=~/hadoop/pids/namenode
-    export SPARK_PID_DIR=~/hadoop/pids/namenode
+    export SPARK_PID_DIR=~/spark/pids/namenode
     
 elif [[ "$TEMP" == *"_2"* ]]; then
 
-    export HADOOP_CONF_DIR=~/hadoop/datanode-1-conf.d
-    export YARN_CONF_DIR=~/hadoop/datanode-1-conf.d
-    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_1
-    #export SPARK_CONF_DIR=/opt/hadoop/home/$USER/spark/conf/spark_node_1
+    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-1
+    export YARN_CONF_DIR=~/hadoop/conf/datanode-1
+    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra-node-1
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1    
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
-    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_1
-    export SPARK_LOG_DIR=~/hadoop/logs/spark.d/datanode-1
+    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-1
+    export SPARK_LOG_DIR=~/spark/logs/datanode-1
 
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
     export YARN_PID_DIR=~/hadoop/pids/datanode-1
-    export SPARK_PID_DIR=~/hadoop/pids/datanode-1
+    export SPARK_PID_DIR=~/spark/pids/datanode-1
 
 elif [[ "$TEMP" == *"_3"* ]]; then
 
-    export HADOOP_CONF_DIR=~/hadoop/datanode-2-conf.d
-    export YARN_CONF_DIR=~/hadoop/datanode-2-conf.d
-    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_2
-    #export SPARK_CONF_DIR=/opt/hadoop/home/$USER/spark/conf/spark_node_2
+    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-2
+    export YARN_CONF_DIR=~/hadoop/conf/datanode-2
+    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra-node-2
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
-    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_2
-    export SPARK_LOG_DIR=~/hadoop/logs/spark.d/datanode-2
+    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-2
+    export SPARK_LOG_DIR=~/spark/logs/datanode-2
     
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
     export YARN_PID_DIR=~/hadoop/pids/datanode-2
-    export SPARK_PID_DIR=~/hadoop/pids/datanode-2
+    export SPARK_PID_DIR=~/spark/pids/datanode-2
 
 else
 
-    export HADOOP_CONF_DIR=~/hadoop/datanode-3-conf.d
-    export YARN_CONF_DIR=~/hadoop/datanode-3-conf.d
-    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra_node_3
-    #export SPARK_CONF_DIR=/opt/hadoop/home/$USER/spark/conf/spark_node_3
+    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-3
+    export YARN_CONF_DIR=~/hadoop/conf/datanode-3
+    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra-node-3
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
-    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra_node_3
-    export SPARK_LOG_DIR=~/hadoop/logs/spark.d/datanode-3
+    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-3
+    export SPARK_LOG_DIR=~/spark/logs/datanode-3
 
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
     export YARN_PID_DIR=~/hadoop/pids/datanode-3
-    export SPARK_PID_DIR=~/hadoop/pids/datanode-3
+    export SPARK_PID_DIR=~/spark/pids/datanode-3
     
 fi
 
