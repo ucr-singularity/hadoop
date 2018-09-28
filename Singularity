@@ -57,14 +57,6 @@ ip=`ifconfig | head -2 | grep inet | awk '{print $2 }'`
 ENDOFFILE
 chmod 0755 /usr/local/bin/cqlsh
 
-# GRADLE
-#cd /usr/local/src
-#wget https://services.gradle.org/distributions/gradle-3.3-all.zip
-#shasum_actual=`sha256sum gradle-3.3-all.zip | awk '{ print $1 }'`
-#shasum_should_be=71a787faed83c4ef21e8464cc8452b941b5fcd575043aa29d39d15d879be89f7
-#[[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
-#unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
-
 # SBT
 curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo
 yum install -y sbt
@@ -93,12 +85,6 @@ export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${CASSANDRA_HOME}/lib
 export SPARK_CONF_DIR=~/spark/conf
 export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
 
-# Generate SPARK_MASTER from IP information
-#cluster_last_octet_base=$(( ( $(ifconfig | grep 'inet 10.0.' | awk '{ print $2 }' | awk -F\. '{ print $4 }') / 4 ) * 4 ))
-#node=$(( $(ifconfig | grep 'inet 10.0.' | awk '{ print $2 }' | awk -F\. '{ print $4 }') %4 - 1 ))
-#spark_master_last_octet=$(( ${cluster_last_octet_base} + 2 ))
-#export SPARK_MASTER=10.0.1.${spark_master_last_octet}
-
 # Node specific environment variables, for use by all programs on those nodes
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
 if [[ "$TEMP" == *"_1"* ]]; then
@@ -116,8 +102,6 @@ if [[ "$TEMP" == *"_1"* ]]; then
     export HADOOP_PID_DIR=~/hadoop/pids/namenode
     export YARN_PID_DIR=~/hadoop/pids/namenode
     export SPARK_PID_DIR=~/hadoop/pids/namenode
-    
-    export SPARK_MASTER_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
     
 elif [[ "$TEMP" == *"_2"* ]]; then
 
@@ -169,7 +153,6 @@ else
     
 fi
 
-
 ## Hadoop namenode
 
 %apprun hadoop-namenode
@@ -183,9 +166,6 @@ elif [ "$1" == "start" ]; then
 
     echo "Starting the resourcemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh start resourcemanager
-    
-    #echo "Starting the spark master..."
-    #${SPARK_HOME}/sbin/spark-daemon.sh start master
 
 elif [ "$1" == "stop" ]; then
     echo "Stopping the namenode..."
@@ -193,9 +173,6 @@ elif [ "$1" == "stop" ]; then
 
     echo "Stopping the resourcemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh stop resourcemanager
-
-    #echo "Stopping the spark master..."
-    #${SPARK_HOME}/sbin/spark-daemon.sh stop master
     
 else
   echo "Incorrect argument for application."
@@ -217,20 +194,12 @@ if [ "$1" == "start" ]; then
     echo "Starting cassandra..."
     cassandra 2>&1 > /dev/null
     
-    #echo "Starting Spark slave..."
-    #${SPARK_HOME}/sbin/spark-daemon.sh start slave
-
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh stop datanode
 
     echo "Stopping the nodemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh stop nodemanager
-
-    # TODO: Stop Cassandra
-    
-    #echo "Stopping Spark slave..."
-    #${SPARK_HOME}/sbin/spark-daemon.sh stop slave
     
 else
   echo "Incorrect argument for application."
@@ -251,9 +220,6 @@ if [ "$1" == "start" ]; then
     
     echo "Starting cassandra..."
     cassandra 2>&1 > /dev/null
-
-    #echo "Starting Spark slave..."
-    #${SPARK_HOME}/sbin/spark-daemon.sh start slave
     
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
@@ -261,11 +227,6 @@ elif [ "$1" == "stop" ]; then
 
     echo "Stopping the nodemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh stop nodemanager
-
-    # TODO: Stop Cassandra
-    
-    #echo "Stopping Spark slave..."
-    #${SPARK_HOME}/sbin/spark-daemon.sh stop slave 
     
 else
   echo "Incorrect argument for application."
@@ -286,21 +247,13 @@ if [ "$1" == "start" ]; then
     
     echo "Starting cassandra..."
     cassandra 2>&1 > /dev/null
-
-    #echo "Starting Spark slave..."
-    #${SPARK_HOME}/sbin/spark-daemon.sh start slave
-    
+   
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh stop datanode
 
     echo "Stopping the nodemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh stop nodemanager
-
-    # TODO: Stop Cassandra
-    
-    #echo "Stopping Spark slave..."
-    #${SPARK_HOME}/sbin/spark-daemon.sh stop slave
     
 else
   echo "Incorrect argument for application."
