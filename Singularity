@@ -9,6 +9,9 @@ yum install -y vim screen tmux wget elinks less net-tools bind-utils nmap-ncat g
 # Install/enable the EPEL repository
 yum install -y epel-release
 
+# Ant and maven
+yum install -y ant maven
+
 # SPARK
 yum install -y java-1.8.0-openjdk python2-pip python-devel openssh-clients
 pip install py4j
@@ -37,6 +40,13 @@ shasum_should_be=dbc6ddbd074d74da97eff66db9699b5ce28ec6f0
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 tar xzf apache-cassandra-3.11.3-bin.tar.gz
 sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra
+
+# GRADLE
+cd /usr/local/src
+wget https://services.gradle.org/distributions/gradle-3.3-all.zip
+shasum_actual=`sha256sum gradle-3.3-all.zip | awk '{ print $1 }'`
+shasum_should_be=71a787faed83c4ef21e8464cc8452b941b5fcd575043aa29d39d15d879be89f7
+unzip -d /usr/local/src/gradle-3.3 gradle-3.3-all.zip
 
 # A wrapper for cqlsh so that it always contacts the right IP in a container
 
@@ -69,16 +79,16 @@ export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
 export CASSANDRA_HOME=/usr/local/src/apache-cassandra-3.11.3
 export SPARK_HOME=/usr/local/src/spark-2.3.1-bin-hadoop2.7
 
-# Hadoop's classpath
-export HADOOP_CLASSPATH=$(hadoop classpath)
-export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${CASSANDRA_HOME}/lib
-
 #JAVA_HOME determined dynamically
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
 # PATH and LD_LIBRARY_PATH modifications
 export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:/usr/local/src/gradle-3.3/gradle-3.3/bin
 export LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:/lib64:/usr/lib64
+
+# Hadoop's classpath
+export HADOOP_CLASSPATH=$(hadoop classpath)
+export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${CASSANDRA_HOME}/lib
 
 # Changed moving to Spark server mode
 #export SPARK_CONF_DIR=~/spark/conf
