@@ -12,6 +12,9 @@ yum install -y epel-release
 # Ant and maven
 yum install -y ant maven
 
+# MySQL equivalent
+yum install -y mariadb-devel mariadb-server
+
 # SPARK
 yum install -y java-1.8.0-openjdk python2-pip python-devel openssh-clients
 pip install py4j
