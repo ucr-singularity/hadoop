@@ -75,7 +75,7 @@ export SPARK_HOME=/usr/local/src/spark-2.3.1-bin-hadoop2.7
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
 # PATH and LD_LIBRARY_PATH modifications
-export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:/usr/local/src/gradle-3.3/gradle-3.3/bin
+export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:/usr/local/src/gradle-4.10.2/gradle-4.10.2/bin
 export LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:/lib64:/usr/lib64
 
 # Hadoop's classpath
