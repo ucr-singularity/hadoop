@@ -119,6 +119,10 @@ elif [[ "$TEMP" == *"_2"* ]]; then
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
     export YARN_PID_DIR=~/hadoop/pids/datanode-1
     export SPARK_PID_DIR=~/spark/pids/datanode-1
+    
+    # Cassandra heap usage
+    export MAX_HEAP_SIZE=2G
+    export HEAP_NEWSIZE=800M
 
 elif [[ "$TEMP" == *"_3"* ]]; then
 
@@ -134,6 +138,10 @@ elif [[ "$TEMP" == *"_3"* ]]; then
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
     export YARN_PID_DIR=~/hadoop/pids/datanode-2
     export SPARK_PID_DIR=~/spark/pids/datanode-2
+    
+    # Cassandra heap usage
+    export MAX_HEAP_SIZE=2G
+    export HEAP_NEWSIZE=800M
 
 else
 
@@ -149,6 +157,10 @@ else
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
     export YARN_PID_DIR=~/hadoop/pids/datanode-3
     export SPARK_PID_DIR=~/spark/pids/datanode-3
+    
+    # Cassandra heap usage
+    export MAX_HEAP_SIZE=2G
+    export HEAP_NEWSIZE=800M
     
 fi
 
