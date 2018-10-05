@@ -89,7 +89,6 @@ export HIVE_HOME=/usr/local/src/apache-hive-2.3.3
 #JAVA_HOME determined dynamically
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
-
 # PATH and LD_LIBRARY_PATH modifications
 export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:${HIVE_HOME}/bin:${HIVE_HOME}/hcatalog/bin:${HIVE_HOME}/hcatalog/sbin:/usr/local/src/gradle-4.10.2/gradle-4.10.2/bin
 export LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:/lib64:/usr/lib64
@@ -101,15 +100,14 @@ export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${CASSANDRA_HOME}/lib
 export SPARK_CONF_DIR=~/spark/conf
 export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
 
-
-
 # Node specific environment variables, for use by all programs on those nodes
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
 if [[ "$TEMP" == *"_1"* ]]; then
 
     export HADOOP_CONF_DIR=~/hadoop/conf/namenode
     export YARN_CONF_DIR=~/hadoop/conf/namenode
-    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra-main
+    export CASSANDRA_CONF=~/cassandra/conf/cassandra-main
+    export HIVE_CONF_DIR=~/hive/conf/hive-main
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
@@ -124,7 +122,8 @@ elif [[ "$TEMP" == *"_2"* ]]; then
 
     export HADOOP_CONF_DIR=~/hadoop/conf/datanode-1
     export YARN_CONF_DIR=~/hadoop/conf/datanode-1
-    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra-node-1
+    export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-1
+    export HIVE_CONF_DIR=~/hive/conf/hive-node-1
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1    
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
@@ -143,8 +142,9 @@ elif [[ "$TEMP" == *"_3"* ]]; then
 
     export HADOOP_CONF_DIR=~/hadoop/conf/datanode-2
     export YARN_CONF_DIR=~/hadoop/conf/datanode-2
-    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra-node-2
-    
+    export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-2
+    export HIVE_CONF_DIR=~/hive/conf/hive-node-2
+        
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
     export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-2
@@ -162,8 +162,9 @@ else
 
     export HADOOP_CONF_DIR=~/hadoop/conf/datanode-3
     export YARN_CONF_DIR=~/hadoop/conf/datanode-3
-    export CASSANDRA_CONF=/opt/hadoop/home/$USER/cassandra/conf/cassandra-node-3
-    
+    export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-3
+    export HIVE_CONF_DIR=~/hive/conf/hive-node-3
+        
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
     export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-3
