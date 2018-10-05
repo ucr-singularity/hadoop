@@ -44,6 +44,14 @@ shasum_should_be=dbc6ddbd074d74da97eff66db9699b5ce28ec6f0
 tar xzf apache-cassandra-3.11.3-bin.tar.gz
 sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra
 
+# HIVE
+cd /usr/local/src
+wget http://apache.spinellicreations.com/hive/hive-2.3.3/apache-hive-2.3.3-bin.tar.gz
+shasum_actual=`sha1sum aapache-hive-2.3.3-bin.tar.gz | awk '{ print $1 }'`
+shasum_should_be=decb462664eec0fb968829e796d4cd719185eba5
+[[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
+tar xzf apache-hive-2.3.3-bin.tar.gz
+
 # GRADLE
 cd /usr/local/src
 wget https://services.gradle.org/distributions/gradle-4.10.2-all.zip
@@ -73,12 +81,14 @@ yum clean all
 export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
 export CASSANDRA_HOME=/usr/local/src/apache-cassandra-3.11.3
 export SPARK_HOME=/usr/local/src/spark-2.3.1-bin-hadoop2.7
+export HIVE_HOME=/usr/local/src/apache-hive-2.3.3
 
 #JAVA_HOME determined dynamically
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
+
 # PATH and LD_LIBRARY_PATH modifications
-export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:/usr/local/src/gradle-4.10.2/gradle-4.10.2/bin
+export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:${HIVE_HOME}/bin:${HIVE_HOME}/hcatalog/bin:${HIVE_HOME}/hcatalog/sbin:/usr/local/src/gradle-4.10.2/gradle-4.10.2/bin
 export LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:/lib64:/usr/lib64
 
 # Hadoop's classpath
@@ -87,6 +97,8 @@ export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${CASSANDRA_HOME}/lib
 
 export SPARK_CONF_DIR=~/spark/conf
 export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
+
+
 
 # Node specific environment variables, for use by all programs on those nodes
 TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
