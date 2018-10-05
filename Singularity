@@ -15,6 +15,9 @@ yum install -y ant maven
 # MySQL equivalent
 yum install -y mariadb-devel mariadb-server
 
+# Firefox and xauth, for remote access
+yum install -y firefox xauth
+
 # SPARK
 yum install -y java-1.8.0-openjdk python2-pip python-devel openssh-clients
 pip install py4j
