@@ -47,7 +47,7 @@ sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cas
 # HIVE
 cd /usr/local/src
 wget http://apache.spinellicreations.com/hive/hive-2.3.3/apache-hive-2.3.3-bin.tar.gz
-shasum_actual=`sha1sum aapache-hive-2.3.3-bin.tar.gz | awk '{ print $1 }'`
+shasum_actual=`sha1sum apache-hive-2.3.3-bin.tar.gz | awk '{ print $1 }'`
 shasum_should_be=decb462664eec0fb968829e796d4cd719185eba5
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 tar xzf apache-hive-2.3.3-bin.tar.gz
