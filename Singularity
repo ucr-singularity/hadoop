@@ -18,8 +18,11 @@ yum install -y mariadb-devel mariadb-server
 # Firefox and xauth, for remote access
 yum install -y firefox xauth
 
+# SSH access
+yum install -y openssh-server openssh-clients
+
 # SPARK
-yum install -y java-1.8.0-openjdk python2-pip python-devel openssh-clients
+yum install -y java-1.8.0-openjdk python2-pip python-devel
 pip install py4j
 cd /usr/local/src
 wget https://archive.apache.org/dist/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz
@@ -291,3 +294,4 @@ fi
 
 %apphelp hadoop-data-node-3
 This app runs a Hadoop data node
+
