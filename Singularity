@@ -21,6 +21,9 @@ yum install -y firefox xauth
 # SSH access
 yum install -y openssh-server openssh-clients
 
+# Supervisor (for supervisord)
+yum install -y supervisor
+
 # SPARK
 yum install -y java-1.8.0-openjdk python2-pip python-devel
 pip install py4j
