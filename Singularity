@@ -4,11 +4,9 @@ From: centos:7
 # This recipe starts from the default CentOS 7 docker image.
 
 # The %post section includes all of the installation and setup.
-
 %post
  
-# Update packages to ensure that the image starts at the latest version of 
-# packages. 
+# Update to ensure that the image starts at the latest version of packages. 
 yum update -y
 
 # Install some useful packages.
@@ -24,18 +22,22 @@ yum install -y ant maven
 # MariaDB is the CentOS drop-in MySQL equivalent.
 yum install -y mariadb-devel mariadb-server
 
-# Firefox and xauth, for remote access to instances (requires specially 
-# configured SSHD running on a high port in the container.)
+# Firefox and xauth, for remote access to instances This requires specially
+# configured SSHD running on a high port in the container.
 yum install -y firefox xauth
 
 # SSH server and client.  SSH is a Swiss army knife, very useful to have the
-# client (and the option to have the server in container instances.)
+# client and the option to have the server in container instances.
 yum install -y openssh-server openssh-clients
 
 # Install Java and the ability to install Python packagages via Pip.
 yum install -y java-1.8.0-openjdk python2-pip python-devel
+
 # Access Java objects in a JVM, or callback objects from Java.
 pip install py4j
+
+# Supervisor, to have the option to run processes using supervisord.
+yum install -y supervisor
 
 # Packages from source.  The standard pattern is to download and compare the
 # expected and actual checksums, and exit if they don't match, before 
