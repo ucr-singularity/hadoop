@@ -83,7 +83,7 @@ sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cas
 # GRADLE
 cd /usr/local/src
 wget https://services.gradle.org/distributions/gradle-4.10.2-all.zip
-shasum_actual=`sha256sum gradle-3.3-all.zip | awk '{ print $1 }'`
+shasum_actual=`sha256sum gradle-4.10.2-all.zip | awk '{ print $1 }'`
 shasum_should_be=b7aedd369a26b177147bcb715f8b1fc4fe32b0a6ade0d7fd8ee5ed0c6f731f2c
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 unzip -d /usr/local/src/gradle-4.10.2 gradle-4.10.2-all.zip
