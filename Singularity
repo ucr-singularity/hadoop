@@ -39,6 +39,9 @@ pip install py4j
 # Supervisor, to have the option to run processes using supervisord.
 yum install -y supervisor
 
+# Bzip2, to be able to install Anaconda Python
+yum install -y bzip2
+
 # Packages from source.  The standard pattern is to download and compare the
 # expected and actual checksums, and exit if they don't match, before 
 # performing further operations. 
