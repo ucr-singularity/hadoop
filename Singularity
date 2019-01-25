@@ -60,7 +60,7 @@ tar xzf hadoop-2.7.7.tar.gz
 
 # HIVE
 cd /usr/local/src
-wget http://apache.spinellicreations.com/hive/hive-2.3.3/apache-hive-2.3.3-bin.tar.gz
+wget https://archive.apache.org/dist/hive/hive-2.3.3/apache-hive-2.3.3-bin.tar.gz
 shasum_actual=`sha1sum apache-hive-2.3.3-bin.tar.gz | awk '{ print $1 }'`
 shasum_should_be=decb462664eec0fb968829e796d4cd719185eba5
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
