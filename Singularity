@@ -10,8 +10,8 @@ From: centos:7
 yum update -y
 
 # Install some useful packages.
-yum install -y vim screen tmux wget elinks less net-tools bind-utils git \
-  unzip man
+ yum install -y vim screen tmux wget elinks less net-tools bind-utils git \
+   unzip man
 
 # Install/enable the EPEL repository. Some necessary software comes from here.
 yum install -y epel-release
@@ -74,14 +74,14 @@ shasum_should_be=dc3a97f3d99791d363e4f70a622b84d6e313bd852f6fdbc777d31eab44cbc11
 [[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
 tar xzf spark-2.3.1-bin-hadoop2.7.tgz
 
-# CASSANDRA 
-cd /usr/local/src
-wget https://archive.apache.org/dist/cassandra/3.11.3/apache-cassandra-3.11.3-bin.tar.gz
-shasum_actual=`sha1sum apache-cassandra-3.11.3-bin.tar.gz | awk '{ print $1 }'`
-shasum_should_be=dbc6ddbd074d74da97eff66db9699b5ce28ec6f0
-[[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
-tar xzf apache-cassandra-3.11.3-bin.tar.gz
-sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra
+## CASSANDRA 
+#cd /usr/local/src
+#wget https://archive.apache.org/dist/cassandra/3.11.3/apache-cassandra-3.11.3-bin.tar.gz
+#shasum_actual=`sha1sum apache-cassandra-3.11.3-bin.tar.gz | awk '{ print $1 }'`
+#shasum_should_be=dbc6ddbd074d74da97eff66db9699b5ce28ec6f0
+#[[ "${shasum_should_be}" == "${shasum_actual}" ]] || exit -1
+#tar xzf apache-cassandra-3.11.3-bin.tar.gz
+#sed -i 's/$CASSANDRA_HOME\/logs/\/$CASSANDRA_LOG_DIR/' /usr/local/src/apache-cassandra-3.11.3/bin/cassandra
 
 # GRADLE
 cd /usr/local/src
@@ -95,15 +95,15 @@ unzip -d /usr/local/src/gradle-4.10.2 gradle-4.10.2-all.zip
 curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo
 yum install -y sbt
 
-# A wrapper for cqlsh so that it always contacts the right IP in a container
-# This only works on the nodes that have Cassandra - meaning not the first node
-# in the cluster!
-cat > /usr/local/bin/cqlsh << \ENDOFFILE
-#!/bin/bash
-ip=`ifconfig | head -2 | grep inet | awk '{print $2 }'`
-/usr/local/src/apache-cassandra-3.11.3/bin/cqlsh "$@" $ip
-ENDOFFILE
-chmod 0755 /usr/local/bin/cqlsh
+## A wrapper for cqlsh so that it always contacts the right IP in a container
+## This only works on the nodes that have Cassandra - meaning not the first node
+## in the cluster!
+#cat > /usr/local/bin/cqlsh << \ENDOFFILE
+##!/bin/bash
+#ip=`ifconfig | head -2 | grep inet | awk '{print $2 }'`
+#/usr/local/src/apache-cassandra-3.11.3/bin/cqlsh "$@" $ip
+#ENDOFFILE
+#chmod 0755 /usr/local/bin/cqlsh
 
 # Clean up yum cache to save some space.
 yum clean all
@@ -114,7 +114,7 @@ yum clean all
 
 # Home for the various servers
 export HADOOP_HOME=/usr/local/src/hadoop-2.7.7
-export CASSANDRA_HOME=/usr/local/src/apache-cassandra-3.11.3
+#export CASSANDRA_HOME=/usr/local/src/apache-cassandra-3.11.3
 export SPARK_HOME=/usr/local/src/spark-2.3.1-bin-hadoop2.7
 export HIVE_HOME=/usr/local/src/apache-hive-2.3.3
 
@@ -122,12 +122,13 @@ export HIVE_HOME=/usr/local/src/apache-hive-2.3.3
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
 # PATH and LD_LIBRARY_PATH modifications
-export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:${HIVE_HOME}/bin:${HIVE_HOME}/hcatalog/bin:${HIVE_HOME}/hcatalog/sbin:/usr/local/src/gradle-4.10.2/gradle-4.10.2/bin
+#export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${CASSANDRA_HOME}/bin:${HIVE_HOME}/bin:${HIVE_HOME}/hcatalog/bin:${HIVE_HOME}/hcatalog/sbin:/usr/local/src/gradle-4.10.2/gradle-4.10.2/bin
+export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${SPARK_HOME}/bin:${HIVE_HOME}/bin:${HIVE_HOME}/hcatalog/bin:${HIVE_HOME}/hcatalog/sbin:/usr/local/src/gradle-4.10.2/gradle-4.10.2/bin
 export LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:/lib64:/usr/lib64
 
 # Hadoop's classpath. Best generated dynamically
 export HADOOP_CLASSPATH=$(hadoop classpath)
-export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${CASSANDRA_HOME}/lib
+#export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${CASSANDRA_HOME}/lib
 
 # All nodes that run Spark have the same configuration directory, but 
 # different IP addresses.
@@ -150,12 +151,12 @@ if [[ "$TEMP" == *"_1"* ]]; then
 
     export HADOOP_CONF_DIR=~/hadoop/conf/namenode
     export YARN_CONF_DIR=~/hadoop/conf/namenode
-    export CASSANDRA_CONF=~/cassandra/conf/cassandra-main
+    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-main
     export HIVE_CONF_DIR=~/hive/conf/hive-main
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
-    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-main
+    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-main
     export SPARK_LOG_DIR=~/spark/logs/namenode
 
     export HADOOP_PID_DIR=~/hadoop/pids/namenode
@@ -167,63 +168,63 @@ elif [[ "$TEMP" == *"_2"* ]]; then
 
     export HADOOP_CONF_DIR=~/hadoop/conf/datanode-1
     export YARN_CONF_DIR=~/hadoop/conf/datanode-1
-    export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-1
+    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-1
     export HIVE_CONF_DIR=~/hive/conf/hive-node-1
     
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1    
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
-    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-1
+    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-1
     export SPARK_LOG_DIR=~/spark/logs/datanode-1
 
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
     export YARN_PID_DIR=~/hadoop/pids/datanode-1
     export SPARK_PID_DIR=~/spark/pids/datanode-1
     
-    # Cassandra heap usage
-    export MAX_HEAP_SIZE=2G
-    export HEAP_NEWSIZE=800M
+    ## Cassandra heap usage
+    #export MAX_HEAP_SIZE=2G
+    #export HEAP_NEWSIZE=800M
 
 # NODE 3
 elif [[ "$TEMP" == *"_3"* ]]; then
 
     export HADOOP_CONF_DIR=~/hadoop/conf/datanode-2
     export YARN_CONF_DIR=~/hadoop/conf/datanode-2
-    export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-2
+    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-2
     export HIVE_CONF_DIR=~/hive/conf/hive-node-2
         
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
-    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-2
+    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-2
     export SPARK_LOG_DIR=~/spark/logs/datanode-2
     
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
     export YARN_PID_DIR=~/hadoop/pids/datanode-2
     export SPARK_PID_DIR=~/spark/pids/datanode-2
     
-    # Cassandra heap usage
-    export MAX_HEAP_SIZE=2G
-    export HEAP_NEWSIZE=800M
+    ## Cassandra heap usage
+    #export MAX_HEAP_SIZE=2G
+    #export HEAP_NEWSIZE=800M
 
 # NODE 4
 else
 
     export HADOOP_CONF_DIR=~/hadoop/conf/datanode-3
     export YARN_CONF_DIR=~/hadoop/conf/datanode-3
-    export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-3
+    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-3
     export HIVE_CONF_DIR=~/hive/conf/hive-node-3
         
     export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
     export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
-    export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-3
+    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-3
     export SPARK_LOG_DIR=~/spark/logs/datanode-3
 
     export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
     export YARN_PID_DIR=~/hadoop/pids/datanode-3
     export SPARK_PID_DIR=~/spark/pids/datanode-3
     
-    # Cassandra heap usage
-    export MAX_HEAP_SIZE=2G
-    export HEAP_NEWSIZE=800M
+    ## Cassandra heap usage
+    #export MAX_HEAP_SIZE=2G
+    #export HEAP_NEWSIZE=800M
     
 fi
 
@@ -271,11 +272,11 @@ if [ "$1" == "start" ]; then
     echo "Starting the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh start datanode
 
-    echo "Startring the nodemanager..."
+    echo "Starting the nodemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh start nodemanager
     
-    echo "Starting cassandra..."
-    cassandra 2>&1 > /dev/null
+    #echo "Starting cassandra..."
+    #cassandra 2>&1 > /dev/null
     
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
@@ -291,7 +292,9 @@ else
 fi
 
 %apphelp hadoop-data-node-1
-This app runs a Hadoop data node and nodemanager, and Cassandra.
+This app runs a Hadoop data node and nodemanager.
+
+#This app runs a Hadoop data node and nodemanager, and Cassandra.
 
 # App for the second datanode. Note that the app must be provided with a valid 
 # option to start or stop services on the node.
@@ -301,11 +304,11 @@ if [ "$1" == "start" ]; then
     echo "Starting the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh start datanode
 
-    echo "Startring the nodemanager..."
+    echo "Starting the nodemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh start nodemanager
     
-    echo "Starting cassandra..."
-    cassandra 2>&1 > /dev/null
+    #echo "Starting cassandra..."
+    #cassandra 2>&1 > /dev/null
     
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
@@ -321,7 +324,9 @@ else
 fi
 
 %apphelp hadoop-data-node-2
-This app runs a Hadoop data node and nodemanager, and Cassandra.
+This app runs a Hadoop data node and nodemanager.
+
+#This app runs a Hadoop data node and nodemanager, and Cassandra.
 
 # App for the third datanode. Note that the app must be provided with a valid 
 # option to start or stop services on the node.
@@ -331,11 +336,11 @@ if [ "$1" == "start" ]; then
     echo "Starting the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh start datanode
 
-    echo "Startring the nodemanager..."
+    echo "Starting the nodemanager..."
     ${HADOOP_HOME}/sbin/yarn-daemon.sh start nodemanager
     
-    echo "Starting cassandra..."
-    cassandra 2>&1 > /dev/null
+    #echo "Starting cassandra..."
+    #cassandra 2>&1 > /dev/null
    
 elif [ "$1" == "stop" ]; then
     echo "Stopping the datanode..."
@@ -351,5 +356,7 @@ else
 fi
 
 %apphelp hadoop-data-node-3
-This app runs a Hadoop data node and nodemanager, and Cassandrda.
+This app runs a Hadoop data node and nodemanager.
+
+#This app runs a Hadoop data node and nodemanager, and Cassandrda.
 
