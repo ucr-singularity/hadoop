@@ -140,7 +140,7 @@ export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
 # Answers the question: "which node is this", inside a Singularity instance.
 # The instances have a standard naming convention (outside this repo), so this
 # works.
-TEMP=`ps x --no-headers | grep -o 'singularity-instance:.*]' | head -1`
+TEMP=`ps x --no-headers | grep -o 'Singularity instance.*]' | head -1`
 
 # For each node, the configuration directories of services, log directories,
 # and PID directories are provided as environment variables.  Nodes running
