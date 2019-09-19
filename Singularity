@@ -359,4 +359,3 @@ fi
 This app runs a Hadoop data node and nodemanager.
 
 #This app runs a Hadoop data node and nodemanager, and Cassandrda.
-
