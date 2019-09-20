@@ -135,98 +135,111 @@ export HADOOP_CLASSPATH=$(hadoop classpath)
 export SPARK_CONF_DIR=~/spark/conf
 export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
 
+# NOTE: As singularity has changed the way it handles instance names,
+# Instance names no longer appear inside the container's process list.
+# As such, we can no longer use this method of per-instance based environment
+# variables.
+
 # Node specific environment variables, for use by all programs on those nodes.
 
-# Answers the question: "which node is this", inside a Singularity instance.
-# The instances have a standard naming convention (outside this repo), so this
-# works.
-TEMP=`ps x --no-headers | grep -o 'Singularity instance.*]' | head -1`
+## Answers the question: "which node is this", inside a Singularity instance.
+## The instances have a standard naming convention (outside this repo), so this
+## works.
+#TEMP=`ps x --no-headers | grep -o 'Singularity instance.*]' | head -1`
+#
+## For each node, the configuration directories of services, log directories,
+## and PID directories are provided as environment variables.  Nodes running
+## Cassandra also have Cassandra resource management related variables.
+#
+## NODE 1
+#if [[ "$TEMP" == *"_1"* ]]; then
+#
+#    export HADOOP_CONF_DIR=~/hadoop/conf/namenode
+#    export YARN_CONF_DIR=~/hadoop/conf/namenode
+#    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-main
+#    export HIVE_CONF_DIR=~/hive/conf/hive-main
+#    
+#    export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
+#    export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
+#    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-main
+#    export SPARK_LOG_DIR=~/spark/logs/namenode
+#
+#    export HADOOP_PID_DIR=~/hadoop/pids/namenode
+#    export YARN_PID_DIR=~/hadoop/pids/namenode
+#    export SPARK_PID_DIR=~/spark/pids/namenode
+#
+## NODE 2    
+#elif [[ "$TEMP" == *"_2"* ]]; then
+#
+#    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-1
+#    export YARN_CONF_DIR=~/hadoop/conf/datanode-1
+#    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-1
+#    export HIVE_CONF_DIR=~/hive/conf/hive-node-1
+#    
+#    export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1    
+#    export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
+#    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-1
+#    export SPARK_LOG_DIR=~/spark/logs/datanode-1
+#
+#    export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
+#    export YARN_PID_DIR=~/hadoop/pids/datanode-1
+#    export SPARK_PID_DIR=~/spark/pids/datanode-1
+#    
+#    ## Cassandra heap usage
+#    #export MAX_HEAP_SIZE=2G
+#    #export HEAP_NEWSIZE=800M
+#
+## NODE 3
+#elif [[ "$TEMP" == *"_3"* ]]; then
+#
+#    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-2
+#    export YARN_CONF_DIR=~/hadoop/conf/datanode-2
+#    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-2
+#    export HIVE_CONF_DIR=~/hive/conf/hive-node-2
+#        
+#    export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
+#    export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
+#    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-2
+#    export SPARK_LOG_DIR=~/spark/logs/datanode-2
+#    
+#    export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
+#    export YARN_PID_DIR=~/hadoop/pids/datanode-2
+#    export SPARK_PID_DIR=~/spark/pids/datanode-2
+#    
+#    ## Cassandra heap usage
+#    #export MAX_HEAP_SIZE=2G
+#    #export HEAP_NEWSIZE=800M
+#
+## NODE 4
+#else
+#
+#    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-3
+#    export YARN_CONF_DIR=~/hadoop/conf/datanode-3
+#    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-3
+#    export HIVE_CONF_DIR=~/hive/conf/hive-node-3
+#        
+#    export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
+#    export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
+#    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-3
+#    export SPARK_LOG_DIR=~/spark/logs/datanode-3
+#
+#    export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
+#    export YARN_PID_DIR=~/hadoop/pids/datanode-3
+#    export SPARK_PID_DIR=~/spark/pids/datanode-3
+#    
+#    ## Cassandra heap usage
+#    #export MAX_HEAP_SIZE=2G
+#    #export HEAP_NEWSIZE=800M
+#    
+#fi
 
-# For each node, the configuration directories of services, log directories,
-# and PID directories are provided as environment variables.  Nodes running
-# Cassandra also have Cassandra resource management related variables.
 
-# NODE 1
-if [[ "$TEMP" == *"_1"* ]]; then
-
-    export HADOOP_CONF_DIR=~/hadoop/conf/namenode
-    export YARN_CONF_DIR=~/hadoop/conf/namenode
-    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-main
-    export HIVE_CONF_DIR=~/hive/conf/hive-main
-    
-    export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/namenode
-    export YARN_LOG_DIR=~/hadoop/logs/yarn.d/namenode
-    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-main
-    export SPARK_LOG_DIR=~/spark/logs/namenode
-
-    export HADOOP_PID_DIR=~/hadoop/pids/namenode
-    export YARN_PID_DIR=~/hadoop/pids/namenode
-    export SPARK_PID_DIR=~/spark/pids/namenode
-
-# NODE 2    
-elif [[ "$TEMP" == *"_2"* ]]; then
-
-    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-1
-    export YARN_CONF_DIR=~/hadoop/conf/datanode-1
-    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-1
-    export HIVE_CONF_DIR=~/hive/conf/hive-node-1
-    
-    export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-1    
-    export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-1
-    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-1
-    export SPARK_LOG_DIR=~/spark/logs/datanode-1
-
-    export HADOOP_PID_DIR=~/hadoop/pids/datanode-1
-    export YARN_PID_DIR=~/hadoop/pids/datanode-1
-    export SPARK_PID_DIR=~/spark/pids/datanode-1
-    
-    ## Cassandra heap usage
-    #export MAX_HEAP_SIZE=2G
-    #export HEAP_NEWSIZE=800M
-
-# NODE 3
-elif [[ "$TEMP" == *"_3"* ]]; then
-
-    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-2
-    export YARN_CONF_DIR=~/hadoop/conf/datanode-2
-    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-2
-    export HIVE_CONF_DIR=~/hive/conf/hive-node-2
-        
-    export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-2
-    export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-2
-    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-2
-    export SPARK_LOG_DIR=~/spark/logs/datanode-2
-    
-    export HADOOP_PID_DIR=~/hadoop/pids/datanode-2
-    export YARN_PID_DIR=~/hadoop/pids/datanode-2
-    export SPARK_PID_DIR=~/spark/pids/datanode-2
-    
-    ## Cassandra heap usage
-    #export MAX_HEAP_SIZE=2G
-    #export HEAP_NEWSIZE=800M
-
-# NODE 4
-else
-
-    export HADOOP_CONF_DIR=~/hadoop/conf/datanode-3
-    export YARN_CONF_DIR=~/hadoop/conf/datanode-3
-    #export CASSANDRA_CONF=~/cassandra/conf/cassandra-node-3
-    export HIVE_CONF_DIR=~/hive/conf/hive-node-3
-        
-    export HADOOP_LOG_DIR=~/hadoop/logs/hadoop.d/datanode-3
-    export YARN_LOG_DIR=~/hadoop/logs/yarn.d/datanode-3
-    #export CASSANDRA_LOG_DIR=~/cassandra/logs/cassandra-node-3
-    export SPARK_LOG_DIR=~/spark/logs/datanode-3
-
-    export HADOOP_PID_DIR=~/hadoop/pids/datanode-3
-    export YARN_PID_DIR=~/hadoop/pids/datanode-3
-    export SPARK_PID_DIR=~/spark/pids/datanode-3
-    
-    ## Cassandra heap usage
-    #export MAX_HEAP_SIZE=2G
-    #export HEAP_NEWSIZE=800M
-    
-fi
+# This startscript uses the bind-mounted /etc/env.sh to dynamically
+# create the environment for each instance depending on the bind variables
+# specified in the group vars.
+# The startscript will be ran every time "instance start" is invoked.
+%startscript
+source /etc/env.sh
 
 # Application for the Hadoop primary namenode - there's no secondary
 # namenode in this configuration.
