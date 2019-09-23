@@ -252,7 +252,7 @@ source /etc/env.sh
 # services on the node. It must be provided with at least one valid 
 # option.
 
-%apprun hadoop-namenode
+%apprun hadoop_namenode
 if [ "$1" == "format" ]; then
     echo "Formatting the namenode with a default name..."
     ${HADOOP_HOME}/bin/hdfs namenode -format hadoop_cluster
@@ -277,13 +277,13 @@ else
   echo "Arguments: format, start, stop"
 fi
 
-%apphelp hadoop-namenode
+%apphelp hadoop_namenode
 This app runs a Hadoop primary namenode and resourcemanager.
 
 # App for the first datanode. Note that the app must be provided with a valid 
 # option such as to to start or stop services on the node.
 
-%apprun hadoop-data-node-1
+%apprun hadoop_data_node_1
 if [ "$1" == "start" ]; then
     echo "Starting the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh start datanode
@@ -307,7 +307,7 @@ else
   echo "Arguments: start, stop"
 fi
 
-%apphelp hadoop-data-node-1
+%apphelp hadoop_data_node_1
 This app runs a Hadoop data node and nodemanager.
 
 #This app runs a Hadoop data node and nodemanager, and Cassandra.
@@ -315,7 +315,7 @@ This app runs a Hadoop data node and nodemanager.
 # App for the second datanode. Note that the app must be provided with a valid 
 # option to start or stop services on the node.
 
-%apprun hadoop-data-node-2
+%apprun hadoop_data_node_2
 if [ "$1" == "start" ]; then
     echo "Starting the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh start datanode
@@ -339,7 +339,7 @@ else
   echo "Arguments: start, stop"
 fi
 
-%apphelp hadoop-data-node-2
+%apphelp hadoop_data_node_2
 This app runs a Hadoop data node and nodemanager.
 
 #This app runs a Hadoop data node and nodemanager, and Cassandra.
@@ -347,7 +347,7 @@ This app runs a Hadoop data node and nodemanager.
 # App for the third datanode. Note that the app must be provided with a valid 
 # option to start or stop services on the node.
 
-%apprun hadoop-data-node-3
+%apprun hadoop_data_node_3
 if [ "$1" == "start" ]; then
     echo "Starting the datanode..."
     ${HADOOP_HOME}/sbin/hadoop-daemon.sh start datanode
@@ -371,7 +371,7 @@ else
   echo "Arguments: start, stop"
 fi
 
-%apphelp hadoop-data-node-3
+%apphelp hadoop_data_node_3
 This app runs a Hadoop data node and nodemanager.
 
 #This app runs a Hadoop data node and nodemanager, and Cassandrda.
