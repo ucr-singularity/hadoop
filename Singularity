@@ -108,6 +108,9 @@ yum install -y sbt
 # Clean up yum cache to save some space.
 yum clean all
 
+# Append environment script invocation to end of global bashrc
+echo "source /etc/env.sh" >> /etc/bashrc
+
 %environment
 
 # This is the RUNTIME environment for the different servers. 
