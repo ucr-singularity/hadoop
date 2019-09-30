@@ -237,13 +237,6 @@ export SPARK_LOCAL_IP=`ifconfig | grep 'inet 10.0.' | awk '{ print $2 }'`
 #fi
 
 
-# This startscript uses the bind-mounted /etc/env.sh to dynamically
-# create the environment for each instance depending on the bind variables
-# specified in the group vars.
-# The startscript will be ran every time "instance start" is invoked.
-%startscript
-source /etc/env.sh
-
 # Application for the Hadoop primary namenode - there's no secondary
 # namenode in this configuration.
 
